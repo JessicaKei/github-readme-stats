@@ -462,6 +462,14 @@ export const themes = {
     icon_color: "ffffff",
     bg_color: "35,4158d0,c850c0,ffcc70",
   },
+  deep_ocean: {
+    title_color: "00A8F2",
+    icon_color: "01B5FD",
+    text_color: "C3F5F6",
+    bg_color: "000F2D",
+    border_color: "022B8A",
+    ring_color: "01B5FD",
+  },
 };
 
 export default themes;
