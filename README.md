@@ -2,7 +2,7 @@
   <img src="https://res.cloudinary.com/anuraghazra/image/upload/v1594908242/logo_ccswme.svg" width="100px" alt="GitHub Readme Stats" />
 </div>
 
-# GitHub Readme Stats <a href="https://www.patreon.com/cw/JesKei"><img align="right" alt="Views Counter" src="https://views-counter.vercel.app/badge?pageId=JessicaKei%2Fgithub-readme-stats&leftColor=555555&rightColor=000F2D&label=REPOSITORY%20VIEWS" /></a>
+# GitHub Readme Stats <a href="https://www.patreon.com/cw/JesKei"><img align="right" alt="Views Counter" src="https://views-counter.vercel.app/badge?pageId=JessicaKei%2Fgithub-readme-stats&leftColor=555555&rightColor=000F2D&label=REPOSITORY%20VIEWS" /></a><a href="https://vercel.com"><img width=123 align="right" alt="Powered by Vercel" src="./powered-by-vercel.svg" /></a>
 
 Self-hosted deployment of GitHub README Stats used for Jessica Kei profile and repositories.  
 
@@ -11,12 +11,6 @@ Based on:
 
 See original documentation:  
 [UPSTREAM_README.md](./UPSTREAM_README.md)  
-
-<br />
-
-## Deployment
-
-[![Powered by Vercel](./powered-by-vercel.svg)](https://vercel.com)  
 
 <br />
 
@@ -105,7 +99,7 @@ See the original documentation for additional parameters and configuration optio
 > Abusive usage may result in temporary or permanent blocking to protect deployment stability for other users.  
 > If you need unrestricted usage, custom limits, or full control over caching behavior, you should deploy your own instance using the original project documentation.
 > 
-> [![Powered by Vercel](./powered-by-vercel.svg)](https://vercel.com)
+> [![Vercel](./vercel.svg)](https://vercel.com)
 
 <br />
 
