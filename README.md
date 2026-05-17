@@ -63,7 +63,7 @@ See the original documentation for additional parameters and configuration optio
   <br />
 
   ```html
-  <div align="left">
+  <div align="center">
     <a href="https://github.com/JessicaKei/github-readme-stats">
       <img valign="top" height=315 alt="JesKei's GitHub stats" src="https://jeskei-github-stats.vercel.app/api?username=JessicaKei&theme=deep_ocean&show_icons=true&include_all_commits=true&count_private=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage" />
     </a>
@@ -74,7 +74,7 @@ See the original documentation for additional parameters and configuration optio
   </div>
   ```
 
-<div align="left">
+<div align="center">
   <a href="https://github.com/JessicaKei/github-readme-stats">
     <img valign="top" height=315 alt="JesKei's GitHub stats" src="https://jeskei-github-stats.vercel.app/api?username=JessicaKei&theme=deep_ocean&show_icons=true&include_all_commits=true&count_private=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage" />
   </a>
