@@ -1,4 +1,8 @@
-# github-readme-stats <a href="https://www.patreon.com/cw/JesKei"><img align="right" alt="Views Counter" src="https://views-counter.vercel.app/badge?pageId=JessicaKei%2Fgithub-readme-stats&leftColor=555555&rightColor=000F2D&label=REPOSITORY%20VIEWS" /></a>
+<div align="center">
+  <img src="https://res.cloudinary.com/anuraghazra/image/upload/v1594908242/logo_ccswme.svg" width="100px" alt="GitHub Readme Stats" />
+</div>
+
+# GitHub Readme Stats <a href="https://www.patreon.com/cw/JesKei"><img align="right" alt="Views Counter" src="https://views-counter.vercel.app/badge?pageId=JessicaKei%2Fgithub-readme-stats&leftColor=555555&rightColor=000F2D&label=REPOSITORY%20VIEWS" /></a>
 
 Self-hosted deployment of GitHub README Stats used for Jessica Kei profile and repositories.  
 
