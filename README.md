@@ -14,6 +14,12 @@ See original documentation:
 
 <br />
 
+## Deployment
+
+[![Powered by Vercel](./powered-by-vercel.svg)](https://vercel.com)  
+
+<br />
+
 ## Purpose
 
 Custom deployment for:  
@@ -23,13 +29,6 @@ Custom deployment for:
 - theme customization  
 - caching control  
 - uptime stability  
-
-<br />
-
-## Deployment
-
-Hosted on **[Vercel](https://vercel.com)**.  
-[https://jeskei-github-stats.vercel.app](https://jeskei-github-stats.vercel.app)  
 
 <br />
 
@@ -45,7 +44,7 @@ https://jeskei-github-stats.vercel.app
 **Examples:**  
 
 ```md
-[![GitHub Stats](https://jeskei-github-stats.vercel.app/api?username=YOUR_USERNAME")](https://github.com/JessicaKei/github-readme-stats)
+[![GitHub Stats](https://jeskei-github-stats.vercel.app/api?username=YOUR_USERNAME)](https://github.com/JessicaKei/github-readme-stats)
 
 [![Top languages](https://jeskei-github-stats.vercel.app/api/top-langs?username=YOUR_USERNAME)](https://github.com/JessicaKei/github-readme-stats)
 ```
@@ -99,10 +98,14 @@ See the original documentation for additional parameters and configuration optio
 > Please use this shared public deployment responsibly.  
 > This public deployment is maintained for personal use and shared provided as-is without uptime guarantees.  
 
+<br />
+
 > [!WARNING]
 > Please avoid excessive request spam or extremely aggressive cache bypass settings.  
 > Abusive usage may result in temporary or permanent blocking to protect deployment stability for other users.  
-> If you need unrestricted usage, custom limits, or full control over caching behavior, you should deploy your own instance using the original project documentation.  
+> If you need unrestricted usage, custom limits, or full control over caching behavior, you should deploy your own instance using the original project documentation.
+> 
+> [![Powered by Vercel](./powered-by-vercel.svg)](https://vercel.com)
 
 <br />
 
