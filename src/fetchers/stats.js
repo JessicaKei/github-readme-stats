@@ -160,6 +160,7 @@ const fetcher = (variables, token) => {
  * @param {boolean} variables.includeDiscussions Include discussions.
  * @param {boolean} variables.includeDiscussionsAnswers Include discussions answers.
  * @param {string|undefined} variables.startTime Time to start the count of total commits.
+ * @param {string} [variables.query] An external GraphQL query that is forced into the fetcher (e.g. for an advanced API).
  * @returns {Promise<import('axios').AxiosResponse>} Axios response.
  *
  * @description This function supports multi-page fetching if the 'FETCH_MULTI_PAGE_STARS' environment variable is set to true.
@@ -170,6 +171,7 @@ const statsFetcher = async ({
   includeDiscussions,
   includeDiscussionsAnswers,
   startTime,
+  query,
 }) => {
   let stats;
   let hasNextPage = true;
@@ -183,6 +185,7 @@ const statsFetcher = async ({
       includeDiscussions,
       includeDiscussionsAnswers,
       startTime,
+      query,
     };
     let res = await retryer(fetcher, variables);
     if (res.data.errors) {
