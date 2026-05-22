@@ -38,45 +38,64 @@ const GRAPHQL_REPOS_QUERY = `
   }
 `;
 
-const GRAPHQL_STATS_QUERY = `
-  query userInfo($login: String!, $after: String, $includeMergedPullRequests: Boolean!, $includeDiscussions: Boolean!, $includeDiscussionsAnswers: Boolean!, $startTime: DateTime = null) {
-    user(login: $login) {
-      name
-      login
-      commits: contributionsCollection (from: $startTime) {
-        totalCommitContributions,
-      }
-      reviews: contributionsCollection {
-        totalPullRequestReviewContributions
-      }
-      repositoriesContributedTo(first: 1, contributionTypes: [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]) {
-        totalCount
-      }
-      pullRequests(first: 1) {
-        totalCount
-      }
-      mergedPullRequests: pullRequests(states: MERGED) @include(if: $includeMergedPullRequests) {
-        totalCount
-      }
-      openIssues: issues(states: OPEN) {
-        totalCount
-      }
-      closedIssues: issues(states: CLOSED) {
-        totalCount
-      }
-      followers {
-        totalCount
-      }
-      repositoryDiscussions @include(if: $includeDiscussions) {
-        totalCount
-      }
-      repositoryDiscussionComments(onlyAnswers: true) @include(if: $includeDiscussionsAnswers) {
-        totalCount
-      }
-      ${GRAPHQL_REPOS_FIELD}
-    }
+const GRAPHQL_SHARED_STATS_FIELDS = `
+  name
+  login
+  reviews: contributionsCollection {
+    totalPullRequestReviewContributions
   }
+  repositoriesContributedTo(first: 1, contributionTypes: [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]) {
+    totalCount
+  }
+  pullRequests(first: 1) {
+    totalCount
+  }
+  mergedPullRequests: pullRequests(states: MERGED) @include(if: $includeMergedPullRequests) {
+    totalCount
+  }
+  openIssues: issues(states: OPEN) {
+    totalCount
+  }
+  closedIssues: issues(states: CLOSED) {
+    totalCount
+  }
+  followers {
+    totalCount
+  }
+  repositoryDiscussions @include(if: $includeDiscussions) {
+    totalCount
+  }
+  repositoryDiscussionComments(onlyAnswers: true) @include(if: $includeDiscussionsAnswers) {
+    totalCount
+  }
+  ${GRAPHQL_REPOS_FIELD}
 `;
+
+/**
+* Helper function for wrapping fields in the basic GraphQL userInfo query.
+* Prevents duplication of the root structure and query parameters.
+ *
+ * @param {string} innerFields Internal GraphQL fields to query on the user object.
+ * @param {boolean} [hasStartTime=false] Flag to dynamically add the $startTime argument to the header.
+ * @returns {string} Full text of the GraphQL query.
+ */
+const wrapInUserInfoQuery = (innerFields, hasStartTime = false) => {
+  const startTimeArg = hasStartTime ? ", $startTime: DateTime = null" : "";
+  return `
+    query userInfo($login: String!, $after: String, $includeMergedPullRequests: Boolean!, $includeDiscussions: Boolean!, $includeDiscussionsAnswers: Boolean!${startTimeArg}) {
+      user(login: $login) {
+        ${innerFields}
+      }
+    }
+  `;
+};
+
+const GRAPHQL_STATS_QUERY = wrapInUserInfoQuery(`
+  commits: contributionsCollection (from: $startTime) {
+    totalCommitContributions,
+  }
+  ${GRAPHQL_SHARED_STATS_FIELDS}
+`, true);
 
 /**
  * Stats fetcher object.
