@@ -97,6 +97,38 @@ const GRAPHQL_STATS_QUERY = wrapInUserInfoQuery(`
   ${GRAPHQL_SHARED_STATS_FIELDS}
 `, true);
 
+const GRAPHQL_CREATION_QUERY = `
+  query userCreation($login: String!) {
+    user(login: $login) {
+      createdAt
+    }
+  }
+`;
+
+/**
+ * Dynamic generation of ONE packed GraphQL query for a range of years.
+ *
+ * @param {number} startYear Starting year of the range.
+ * @param {number} endYear End year of the range.
+ * @returns {string} GraphQL query text.
+ */
+const generateGraphQLQuery = (startYear, endYear) => {
+  let yearlyCommitsFields = "";
+  for (let year = startYear; year <= endYear; year++) {
+    yearlyCommitsFields += `
+      year_${year}: contributionsCollection(from: "${year}-01-01T00:00:00Z", to: "${year}-12-31T23:59:59Z") {
+        totalCommitContributions
+        restrictedContributionsCount
+      }
+    `;
+  }
+  
+  return wrapInUserInfoQuery(`
+    ${yearlyCommitsFields}
+    ${GRAPHQL_SHARED_STATS_FIELDS}
+  `);
+};
+
 /**
  * Stats fetcher object.
  *
