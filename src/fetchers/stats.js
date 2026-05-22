@@ -273,6 +273,8 @@ const totalCommitsFetcher = async (username) => {
  * @param {boolean} include_discussions Include discussions.
  * @param {boolean} include_discussions_answers Include discussions answers.
  * @param {number|undefined} commits_year Year to count total commits
+ * @param {number|undefined} [commits_end_year] End year of the range
+ * @param {string} [all_commits_api] API type for commit counting
  * @returns {Promise<import("./types").StatsData>} Stats data.
  */
 const fetchStats = async (
@@ -283,6 +285,8 @@ const fetchStats = async (
   include_discussions = false,
   include_discussions_answers = false,
   commits_year,
+  commits_end_year,
+  all_commits_api,
 ) => {
   if (!username) {
     throw new MissingParamError(["username"]);
