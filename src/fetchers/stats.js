@@ -301,6 +301,59 @@ const handleGraphQLErrors = (res) => {
 };
 
 /**
+ * Determines whether the advanced commit count API should be used
+ * and dynamically generates the corresponding GraphQL query.
+ *
+ * @param {string} username GitHub username.
+ * @param {boolean} include_all_commits Flag for counting commits over time (including private ones).
+ * @param {number|undefined} commits_year Start year of the range or a specific year.
+ * @param {number|undefined} commits_end_year The end year of the range of years.
+ * @returns {Promise<{ query?: string, startYear?: number, endYear?: number }>} An object containing the generated query and resolved year boundaries if conditions are met; an empty object otherwise.
+ */
+const resolveAdvancedStatsQuery = async (username, include_all_commits, commits_year, commits_end_year) => {
+  const useYearRange =
+    commits_year !== undefined &&
+    commits_end_year !== undefined &&
+    !isNaN(commits_year) &&
+    !isNaN(commits_end_year) &&
+    commits_end_year >= commits_year;
+  
+  if (useYearRange) {
+    return {
+      query: generateAdvancedStatsQuery(commits_year, commits_end_year, include_all_commits),
+      startYear: commits_year,
+      endYear: commits_end_year
+    };
+  }
+  
+  if (!include_all_commits) {
+    return {};
+  }
+  
+  if (commits_year) {
+    return {
+      query: generateAdvancedStatsQuery(commits_year, commits_year, include_all_commits),
+      startYear: commits_year,
+      endYear: commits_year
+    };
+  }
+  
+  const res = await retryer(fetcher, { login: username, query: GRAPHQL_CREATION_QUERY });
+    
+  // Catch GraphQL errors.
+  handleGraphQLErrors(res);
+
+  const startYear = new Date(res.data.data.user.createdAt).getFullYear();
+  const endYear = new Date().getFullYear();
+
+  return {
+    query: generateAdvancedStatsQuery(startYear, endYear, include_all_commits),
+    startYear: startYear,
+    endYear: endYear
+  };
+}
+
+/**
  * Fetch stats for a given username.
  *
  * @param {string} username GitHub username.
