@@ -266,6 +266,38 @@ const totalCommitsFetcher = async (username) => {
 };
 
 /**
+ * Check GraphQL response for errors, log them, and throw corresponding CustomError.
+ *
+ * @param {import('axios').AxiosResponse} res The Axios/Fetch response object.
+ * @throws {CustomError} If the response contains GraphQL errors.
+ */
+const handleGraphQLErrors = (res) => {
+  if (!res.data.errors) {
+    return;
+  }
+
+  logger.error(res.data.errors);
+  const firstError = res.data.errors[0];
+
+  if (firstError.type === "NOT_FOUND") {
+    throw new CustomError(
+      firstError.message || "Could not fetch user.",
+      CustomError.USER_NOT_FOUND,
+    );
+  }
+  if (firstError.message) {
+    throw new CustomError(
+      wrapTextMultiline(firstError.message, 90, 1)[0],
+      res.statusText,
+    );
+  }
+  throw new CustomError(
+    "Something went wrong while trying to retrieve the stats data using the GraphQL API.",
+    CustomError.GRAPHQL_ERROR,
+  );
+};
+
+/**
  * Fetch stats for a given username.
  *
  * @param {string} username GitHub username.
@@ -318,25 +350,7 @@ const fetchStats = async (
   });
 
   // Catch GraphQL errors.
-  if (res.data.errors) {
-    logger.error(res.data.errors);
-    if (res.data.errors[0].type === "NOT_FOUND") {
-      throw new CustomError(
-        res.data.errors[0].message || "Could not fetch user.",
-        CustomError.USER_NOT_FOUND,
-      );
-    }
-    if (res.data.errors[0].message) {
-      throw new CustomError(
-        wrapTextMultiline(res.data.errors[0].message, 90, 1)[0],
-        res.statusText,
-      );
-    }
-    throw new CustomError(
-      "Something went wrong while trying to retrieve the stats data using the GraphQL API.",
-      CustomError.GRAPHQL_ERROR,
-    );
-  }
+  handleGraphQLErrors(res);
 
   const user = res.data.data.user;
 
