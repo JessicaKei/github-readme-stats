@@ -397,12 +397,17 @@ const fetchStats = async (
     rank: { level: "C", percentile: 100 },
   };
 
-  let res = await statsFetcher({
+  const advancedStatsQueryInfo = commits_api === "advanced"
+    ? await resolveAdvancedStatsQuery(username, include_all_commits, commits_year, commits_end_year)
+    : {};
+  
+  const res = await statsFetcher({
     username,
     includeMergedPullRequests: include_merged_pull_requests,
     includeDiscussions: include_discussions,
     includeDiscussionsAnswers: include_discussions_answers,
     startTime: commits_year ? `${commits_year}-01-01T00:00:00Z` : undefined,
+    query: advancedStatsQueryInfo.query,
   });
 
   // Catch GraphQL errors.
@@ -412,8 +417,22 @@ const fetchStats = async (
 
   stats.name = user.name || user.login;
 
-  // if include_all_commits, fetch all commits using the REST API.
-  if (include_all_commits) {
+  if (advancedStatsQueryInfo.query) {
+    const startYear = advancedStatsQueryInfo.startYear || 0;
+    const endYear = advancedStatsQueryInfo.endYear || -1;
+
+    let totalCommits = 0;
+
+    for (let year = startYear; year <= endYear; year++) {
+      const yearBlock = user[`year_${year}`];
+      if (yearBlock) {
+        totalCommits += (yearBlock.totalCommitContributions || 0) + (yearBlock.restrictedContributionsCount || 0);
+      }
+    }
+
+    stats.totalCommits = totalCommits;
+  }
+  else if (include_all_commits) { // if include_all_commits, fetch all commits using the REST API.
     stats.totalCommits = await totalCommitsFetcher(username);
   } else {
     stats.totalCommits = user.commits.totalCommitContributions;
