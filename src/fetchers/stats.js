@@ -113,7 +113,7 @@ const GRAPHQL_CREATION_QUERY = `
  * @param {boolean} includeAllCommits Flag for including private commits in the query.
  * @returns {string} GraphQL query text.
  */
-const generateGraphQLQuery = (startYear, endYear, includeAllCommits) => {
+const generateAdvancedStatsQuery = (startYear, endYear, includeAllCommits) => {
   let yearlyCommitsFields = "";
   const privateField = includeAllCommits ? "restrictedContributionsCount" : "";
   for (let year = startYear; year <= endYear; year++) {
