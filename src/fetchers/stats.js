@@ -110,15 +110,17 @@ const GRAPHQL_CREATION_QUERY = `
  *
  * @param {number} startYear Starting year of the range.
  * @param {number} endYear End year of the range.
+ * @param {boolean} includeAllCommits Flag for including private commits in the query.
  * @returns {string} GraphQL query text.
  */
-const generateGraphQLQuery = (startYear, endYear) => {
+const generateGraphQLQuery = (startYear, endYear, includeAllCommits) => {
   let yearlyCommitsFields = "";
+  const privateField = includeAllCommits ? "restrictedContributionsCount" : "";
   for (let year = startYear; year <= endYear; year++) {
     yearlyCommitsFields += `
       year_${year}: contributionsCollection(from: "${year}-01-01T00:00:00Z", to: "${year}-12-31T23:59:59Z") {
         totalCommitContributions
-        restrictedContributionsCount
+        ${privateField}
       }
     `;
   }
