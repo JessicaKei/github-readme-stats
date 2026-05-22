@@ -72,8 +72,8 @@ const GRAPHQL_SHARED_STATS_FIELDS = `
 `;
 
 /**
-* Helper function for wrapping fields in the basic GraphQL userInfo query.
-* Prevents duplication of the root structure and query parameters.
+ * Helper function for wrapping fields in the basic GraphQL userInfo query.
+ * Prevents duplication of the root structure and query parameters.
  *
  * @param {string} innerFields Internal GraphQL fields to query on the user object.
  * @param {boolean} [hasStartTime=false] Flag to dynamically add the $startTime argument to the header.
@@ -90,12 +90,15 @@ const wrapInUserInfoQuery = (innerFields, hasStartTime = false) => {
   `;
 };
 
-const GRAPHQL_STATS_QUERY = wrapInUserInfoQuery(`
+const GRAPHQL_STATS_QUERY = wrapInUserInfoQuery(
+  `
   commits: contributionsCollection (from: $startTime) {
     totalCommitContributions,
   }
   ${GRAPHQL_SHARED_STATS_FIELDS}
-`, true);
+`,
+  true,
+);
 
 const GRAPHQL_CREATION_QUERY = `
   query userCreation($login: String!) {
@@ -124,7 +127,7 @@ const generateAdvancedStatsQuery = (startYear, endYear, includeAllCommits) => {
       }
     `;
   }
-  
+
   return wrapInUserInfoQuery(`
     ${yearlyCommitsFields}
     ${GRAPHQL_SHARED_STATS_FIELDS}
@@ -139,7 +142,9 @@ const generateAdvancedStatsQuery = (startYear, endYear, includeAllCommits) => {
  * @returns {Promise<import('axios').AxiosResponse>} Axios response.
  */
 const fetcher = (variables, token) => {
-  const query = variables.query || (variables.after ? GRAPHQL_REPOS_QUERY : GRAPHQL_STATS_QUERY);
+  const query =
+    variables.query ||
+    (variables.after ? GRAPHQL_REPOS_QUERY : GRAPHQL_STATS_QUERY);
   return request(
     {
       query,
@@ -310,36 +315,52 @@ const handleGraphQLErrors = (res) => {
  * @param {number|undefined} commits_end_year The end year of the range of years.
  * @returns {Promise<{ query?: string, startYear?: number, endYear?: number }>} An object containing the generated query and resolved year boundaries if conditions are met; an empty object otherwise.
  */
-const resolveAdvancedStatsQuery = async (username, include_all_commits, commits_year, commits_end_year) => {
+const resolveAdvancedStatsQuery = async (
+  username,
+  include_all_commits,
+  commits_year,
+  commits_end_year,
+) => {
   const useYearRange =
     commits_year !== undefined &&
     commits_end_year !== undefined &&
     !isNaN(commits_year) &&
     !isNaN(commits_end_year) &&
     commits_end_year >= commits_year;
-  
+
   if (useYearRange) {
     return {
-      query: generateAdvancedStatsQuery(commits_year, commits_end_year, include_all_commits),
+      query: generateAdvancedStatsQuery(
+        commits_year,
+        commits_end_year,
+        include_all_commits,
+      ),
       startYear: commits_year,
-      endYear: commits_end_year
+      endYear: commits_end_year,
     };
   }
-  
+
   if (!include_all_commits) {
     return {};
   }
-  
+
   if (commits_year) {
     return {
-      query: generateAdvancedStatsQuery(commits_year, commits_year, include_all_commits),
+      query: generateAdvancedStatsQuery(
+        commits_year,
+        commits_year,
+        include_all_commits,
+      ),
       startYear: commits_year,
-      endYear: commits_year
+      endYear: commits_year,
     };
   }
-  
-  const res = await retryer(fetcher, { login: username, query: GRAPHQL_CREATION_QUERY });
-    
+
+  const res = await retryer(fetcher, {
+    login: username,
+    query: GRAPHQL_CREATION_QUERY,
+  });
+
   // Catch GraphQL errors.
   handleGraphQLErrors(res);
 
@@ -348,10 +369,10 @@ const resolveAdvancedStatsQuery = async (username, include_all_commits, commits_
 
   return {
     query: generateAdvancedStatsQuery(startYear, endYear, include_all_commits),
-    startYear: startYear,
-    endYear: endYear
+    startYear,
+    endYear,
   };
-}
+};
 
 /**
  * Fetch stats for a given username.
@@ -397,10 +418,16 @@ const fetchStats = async (
     rank: { level: "C", percentile: 100 },
   };
 
-  const advancedStatsQueryInfo = commits_api === "advanced"
-    ? await resolveAdvancedStatsQuery(username, include_all_commits, commits_year, commits_end_year)
-    : {};
-  
+  const advancedStatsQueryInfo =
+    commits_api === "advanced"
+      ? await resolveAdvancedStatsQuery(
+          username,
+          include_all_commits,
+          commits_year,
+          commits_end_year,
+        )
+      : {};
+
   const res = await statsFetcher({
     username,
     includeMergedPullRequests: include_merged_pull_requests,
@@ -426,13 +453,15 @@ const fetchStats = async (
     for (let year = startYear; year <= endYear; year++) {
       const yearBlock = user[`year_${year}`];
       if (yearBlock) {
-        totalCommits += (yearBlock.totalCommitContributions || 0) + (yearBlock.restrictedContributionsCount || 0);
+        totalCommits +=
+          (yearBlock.totalCommitContributions || 0) +
+          (yearBlock.restrictedContributionsCount || 0);
       }
     }
 
     stats.totalCommits = totalCommits;
-  }
-  else if (include_all_commits) { // if include_all_commits, fetch all commits using the REST API.
+  } else if (include_all_commits) {
+    // if include_all_commits, fetch all commits using the REST API.
     stats.totalCommits = await totalCommitsFetcher(username);
   } else {
     stats.totalCommits = user.commits.totalCommitContributions;
