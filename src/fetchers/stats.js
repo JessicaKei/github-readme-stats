@@ -132,12 +132,12 @@ const generateGraphQLQuery = (startYear, endYear) => {
 /**
  * Stats fetcher object.
  *
- * @param {object & { after: string | null }} variables Fetcher variables.
+ * @param {object & { after: string | null, query?: string }} variables Fetcher variables.
  * @param {string} token GitHub token.
  * @returns {Promise<import('axios').AxiosResponse>} Axios response.
  */
 const fetcher = (variables, token) => {
-  const query = variables.after ? GRAPHQL_REPOS_QUERY : GRAPHQL_STATS_QUERY;
+  const query = variables.query || (variables.after ? GRAPHQL_REPOS_QUERY : GRAPHQL_STATS_QUERY);
   return request(
     {
       query,
