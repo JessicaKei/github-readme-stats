@@ -505,3 +505,96 @@ describe("Test fetchStats", () => {
     });
   });
 });
+
+describe("FetchStats Advanced API Error Handling Logic", () => {
+  it("should correctly handle and throw CustomError for NOT_FOUND GraphQL errors", async () => {
+    const localMock = new MockAdapter(axios);
+
+    localMock.onPost(new RegExp("/graphql")).reply(200, {
+      errors: [
+        {
+          type: "NOT_FOUND",
+          message: "Could not resolve to a User with the login of 'noname'.",
+        },
+      ],
+    });
+
+    try {
+      await expect(
+        fetchStats(
+          "noname",
+          true,
+          [],
+          false,
+          false,
+          false,
+          undefined,
+          undefined,
+          "advanced",
+        ),
+      ).rejects.toThrow(
+        "Could not resolve to a User with the login of 'noname'.",
+      );
+    } finally {
+      localMock.restore();
+    }
+  });
+
+  it("should correctly handle and throw generic GraphQL errors with a message", async () => {
+    const localMock = new MockAdapter(axios);
+
+    localMock.onPost(new RegExp("/graphql")).reply(200, {
+      errors: [
+        {
+          message: "Some internal GitHub schema error occurred.",
+        },
+      ],
+    });
+
+    try {
+      await expect(
+        fetchStats(
+          "anuraghazra",
+          true,
+          [],
+          false,
+          false,
+          false,
+          undefined,
+          undefined,
+          "advanced",
+        ),
+      ).rejects.toThrow("Some internal GitHub schema error occurred.");
+    } finally {
+      localMock.restore();
+    }
+  });
+
+  it("should throw generic GraphQL error if error object has no type or message", async () => {
+    const localMock = new MockAdapter(axios);
+
+    localMock.onPost(new RegExp("/graphql")).reply(200, {
+      errors: [{}],
+    });
+
+    try {
+      await expect(
+        fetchStats(
+          "anuraghazra",
+          true,
+          [],
+          false,
+          false,
+          false,
+          undefined,
+          undefined,
+          "advanced",
+        ),
+      ).rejects.toThrow(
+        "Something went wrong while trying to retrieve the stats data using the GraphQL API.",
+      );
+    } finally {
+      localMock.restore();
+    }
+  });
+});
