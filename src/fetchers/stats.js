@@ -418,8 +418,10 @@ const fetchStats = async (
     rank: { level: "C", percentile: 100 },
   };
 
+  const isAdvancedDisabled = process.env.DISABLE_ADVANCED_COMMITS === "true";
+
   const advancedStatsQueryInfo =
-    commits_api === "advanced"
+    commits_api === "advanced" && !isAdvancedDisabled
       ? await resolveAdvancedStatsQuery(
           username,
           include_all_commits,
