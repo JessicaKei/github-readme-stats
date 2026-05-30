@@ -374,6 +374,26 @@ const resolveAdvancedStatsQuery = async (
   };
 };
 
+const commitsApiValue = {
+  advanced: "advanced",
+  default: "default",
+};
+
+/**
+ * Returns the validated value for the Commits API.
+ *
+ * @param {string|undefined} value commits api value.
+ * @returns {string} validated commits api value.
+ */
+const getValidatedCommitsApiValue = (value) => {
+  switch (value) {
+    case commitsApiValue.advanced:
+      return value;
+    default:
+      return commitsApiValue.default;
+  }
+};
+
 /**
  * Fetch stats for a given username.
  *
@@ -418,10 +438,11 @@ const fetchStats = async (
     rank: { level: "C", percentile: 100 },
   };
 
+  const commitsApi = getValidatedCommitsApiValue(commits_api);
   const isAdvancedDisabled = process.env.DISABLE_ADVANCED_COMMITS === "true";
 
   const advancedStatsQueryInfo =
-    commits_api === "advanced" && !isAdvancedDisabled
+    commitsApi === commitsApiValue.advanced && !isAdvancedDisabled
       ? await resolveAdvancedStatsQuery(
           username,
           include_all_commits,
