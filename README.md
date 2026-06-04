@@ -28,7 +28,7 @@ See original documentation:
     `commits_end_year=END_YEAR` - example: `commits_end_year=2026`  
     `include_all_commits=true` - if you also want to display private commits  
 * Added custom theme deep_ocean  
-  <a href="https://github.com/JessicaKei/github-readme-stats"><img valign="top" height="315px" alt="JesKei's GitHub stats" src="https://jeskei-github-stats.vercel.app/api?username=JessicaKei&theme=deep_ocean&show_icons=true&include_all_commits=true&commits_api=advanced&count_private=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage" /></a> <a href="https://github.com/JessicaKei/github-readme-stats"><img valign="top" height="315px" alt="JesKei's top languages" src="https://jeskei-github-stats.vercel.app/api/top-langs?username=JessicaKei&theme=deep_ocean&layout=compact&langs_count=18&size_weight=1&count_weight=0.00001&card_width=330" /></a>
+  <a href="https://github.com/JessicaKei/github-readme-stats"><img valign="top" height="315px" alt="JesKei's GitHub stats" src="https://jeskei-github-stats.vercel.app/api?username=JessicaKei&theme=deep_ocean&show_icons=true&include_all_commits=true&commits_api=advanced&count_private=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage" /></a> <a href="https://github.com/JessicaKei/github-readme-stats"><img valign="top" height="315px" alt="JesKei's top languages" src="https://jeskei-github-stats.vercel.app/api/top-langs?username=JessicaKei&theme=deep_ocean&layout=compact&langs_count=18&size_weight=1&count_weight=0.00001&card_width=330&custom_title=JesKei%27s%20top%20languages" /></a>
 
 <br />
 
@@ -80,7 +80,7 @@ See the original documentation for additional parameters and configuration optio
     </a>
     
     <a href="https://github.com/JessicaKei/github-readme-stats">
-      <img valign="top" height="315px" alt="JesKei's top languages" src="https://jeskei-github-stats.vercel.app/api/top-langs?username=JessicaKei&theme=deep_ocean&layout=compact&langs_count=18&size_weight=1&count_weight=0.00001&card_width=330" />
+      <img valign="top" height="315px" alt="JesKei's top languages" src="https://jeskei-github-stats.vercel.app/api/top-langs?username=JessicaKei&theme=deep_ocean&layout=compact&langs_count=18&size_weight=1&count_weight=0.00001&card_width=330&custom_title=JesKei%27s%20top%20languages" />
     </a>
   </div>
   ```
@@ -91,7 +91,7 @@ See the original documentation for additional parameters and configuration optio
   </a>
   
   <a href="https://github.com/JessicaKei/github-readme-stats">
-    <img valign="top" height="315px" alt="JesKei's top languages" src="https://jeskei-github-stats.vercel.app/api/top-langs?username=JessicaKei&theme=deep_ocean&layout=compact&langs_count=18&size_weight=1&count_weight=0.00001&card_width=330" />
+    <img valign="top" height="315px" alt="JesKei's top languages" src="https://jeskei-github-stats.vercel.app/api/top-langs?username=JessicaKei&theme=deep_ocean&layout=compact&langs_count=18&size_weight=1&count_weight=0.00001&card_width=330&custom_title=JesKei%27s%20top%20languages" />
   </a>
 </div>
   
